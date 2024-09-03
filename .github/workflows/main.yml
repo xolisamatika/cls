@@ -29,6 +29,7 @@ jobs:
         with:
           context: .
           push: true
+          tags: cls:latest
 
 #  docker:
 #    runs-on: ubuntu-latest
