@@ -90,12 +90,17 @@ Use this token in the `Authorization` header for subsequent API requests.
 
 - `POST /api/shipments`: Create a new shipment.
 - `PUT /api/shipments/{id}`: Update an existing shipment.
-- `GET /api/shipments/{id}`: Track a shipment by ID.
+- `GET /api/shipments/{id}/track`: Track a shipment by ID.
+- `PUT /api/shipments/{id}/assign`: Assign shipment to courier.
+- `PATCH /api/shipments/{id}/status`: Update shipment status.
 
 ### Couriers
 
-- `POST /api/couriers`: Assign a shipment to a courier.
+- `POST /api/couriers`: Create a courier.
+- `GET /api/couriers`: List all couriers.
 - `GET /api/couriers/{id}/shipments`: List shipments assigned to a courier.
+- `PUT /api/couriers/{id}/location`: Update courier location.
+- `PUT /api/couriers/{id}/capacity`: Update courier capacity.
 
 ### Authentication
 

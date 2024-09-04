@@ -1,42 +1,42 @@
 //package org.example.logistics.controller;
 //
-//;
-//import jakarta.servlet.http.HttpServletResponse;
 //import org.example.logistics.security.JwtUtils;
-//import org.example.logistics.service.CustomUserDetailsService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.AuthenticationException;
-//import org.springframework.web.bind.annotation.*;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
 //
 //@RestController
 //@RequestMapping("/api/auth")
 //public class AuthController {
 //
-////    @Autowired
-////    private AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
 //
-//    @Autowired
-//    private JwtUtils jwtUtils;
+//    private final JwtUtils jwtUtil;
 //
-//    @Autowired
-//    private CustomUserDetailsService customUserDetailsService;
+//    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtil) {
+//        this.authenticationManager = authenticationManager;
+//        this.jwtUtil = jwtUtil;
+//    }
 //
 //    @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
+//    public String createToken(@RequestParam String username, @RequestParam String password) throws Exception {
 //        try {
-//            Authentication authentication = authenticationManager.authenticate(
+//            authenticationManager.authenticate(
 //                    new UsernamePasswordAuthenticationToken(username, password)
 //            );
-//
-//            String token = jwtUtils.generateJwtToken(username);
-//
-//            return ResponseEntity.ok().header("Authorization", "Bearer " + token).body("Authentication successful");
-//        } catch (AuthenticationException e) {
-//            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body("Authentication failed");
+//        } catch (Exception e) {
+//            throw new Exception("Invalid username/password");
 //        }
+//        return jwtUtil.generateJwtToken(username);
 //    }
+//}
+//
+//class AuthRequest {
+//    private String username;
+//    private String password;
+//
+//    // Getters and Setters
 //}
