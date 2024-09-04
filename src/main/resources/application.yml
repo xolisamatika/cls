@@ -9,6 +9,8 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
+  main:
+    web-application-type: reactive
 
   jpa:
     hibernate:
