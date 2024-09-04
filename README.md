@@ -26,8 +26,8 @@ The Courier Logistics System is a comprehensive solution for managing courier lo
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-repository/courier-logistics-system.git
-cd courier-logistics-system
+git clone https://github.com/your-repository/cls.git
+cd cls
 ```
 
 ### 2. Build the Project
