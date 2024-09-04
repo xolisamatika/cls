@@ -43,17 +43,4 @@ public class CourierServiceTest {
         assertEquals("Jozi", updatedCourier.getLocation());
         verify(courierRepository, times(1)).save(courier);
     }
-
-    @Test
-    public void testAssignShipmentToCourier() {
-        Courier courier = new Courier();
-        courier.setId(1L);
-        courier.setCapacity(1);
-
-        when(courierRepository.findById(1L)).thenReturn(Optional.of(courier));
-
-        courierService.assignShipmentToCourier(1L);
-
-        verify(courierRepository, times(1)).save(courier);
-    }
 }

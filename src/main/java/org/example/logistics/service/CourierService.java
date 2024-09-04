@@ -2,17 +2,32 @@ package org.example.logistics.service;
 
 
 import org.example.logistics.entity.Courier;
+import org.example.logistics.entity.Shipment;
+import org.example.logistics.entity.ShipmentStatus;
 import org.example.logistics.repository.CourierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourierService {
 
-    @Autowired
-    private CourierRepository courierRepository;
+    private final CourierRepository courierRepository;
+
+    public CourierService(CourierRepository courierRepository) {
+        this.courierRepository = courierRepository;
+    }
+
+    public Courier createCourier(Courier courier) {
+        return courierRepository.save(courier);
+    }
+
+    public Optional<Courier> findCourierById(Long courierId) {
+        return courierRepository.findById(courierId);
+    }
 
     public List<Courier> getAllCouriers() {
         return courierRepository.findAll();
@@ -27,11 +42,15 @@ public class CourierService {
         return null;
     }
 
-    public Courier assignShipmentToCourier(Long courierId) {
-        Courier courier = courierRepository.findById(courierId).orElse(null);
-        if (courier != null && courier.getCapacity() > 0) {
-            // Logic to assign shipment to courier
-            courier.setCapacity(courier.getCapacity() - 1);
+    public Optional<Courier> findAvailableCourier(String location) {
+        List<Courier> couriers = courierRepository.findByLocationAndCapacityGreaterThan(location, 0);
+        return couriers.stream().findFirst();
+    }
+
+    public Courier updateCourierCapacity(Long id, int capacity) {
+        Courier courier = courierRepository.findById(id).orElse(null);
+        if (courier != null) {
+            courier.setCapacity(capacity);
             return courierRepository.save(courier);
         }
         return null;

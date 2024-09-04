@@ -28,6 +28,10 @@ public class Shipment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "courier_id")
+    private Courier courier;
+
     // Getters and Setters
 
     @Override

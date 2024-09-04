@@ -2,7 +2,6 @@ package org.example.logistics.controller;
 
 import org.example.logistics.entity.Courier;
 import org.example.logistics.service.CourierService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,17 @@ import java.util.List;
 @RequestMapping("/api/couriers")
 public class CourierController {
 
-    @Autowired
-    private CourierService courierService;
+    private final CourierService courierService;
+
+    public CourierController(CourierService courierService) {
+        this.courierService = courierService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Courier> createCourier(@RequestBody Courier courier) {
+        Courier createdCourier = courierService.createCourier(courier);
+        return ResponseEntity.ok(createdCourier);
+    }
 
     @GetMapping
     public ResponseEntity<List<Courier>> getAllCouriers() {
@@ -30,9 +38,9 @@ public class CourierController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}/assign-shipment")
-    public ResponseEntity<Courier> assignShipmentToCourier(@PathVariable Long id) {
-        Courier courier = courierService.assignShipmentToCourier(id);
+    @PutMapping("/{id}/capacity")
+    public ResponseEntity<Courier> updateCourierCapacity(@PathVariable Long id, @RequestParam int capacity) {
+        Courier courier = courierService.updateCourierCapacity(id, capacity);
         if (courier != null) {
             return ResponseEntity.ok(courier);
         }

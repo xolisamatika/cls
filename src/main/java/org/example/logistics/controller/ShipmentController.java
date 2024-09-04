@@ -1,10 +1,14 @@
 package org.example.logistics.controller;
 
+import org.example.logistics.entity.Courier;
 import org.example.logistics.entity.Shipment;
 import org.example.logistics.entity.ShipmentStatus;
 import org.example.logistics.service.ShipmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/shipments")
@@ -14,6 +18,12 @@ public class ShipmentController {
 
     public ShipmentController(ShipmentService shipmentService) {
         this.shipmentService = shipmentService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Shipment>> getAllShipments() {
+        List<Shipment> shipments = shipmentService.getAllShipments();
+        return ResponseEntity.ok(shipments);
     }
 
     @PostMapping
@@ -31,18 +41,23 @@ public class ShipmentController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/track")
     public ResponseEntity<Shipment> trackShipment(@PathVariable Long id) {
-        Shipment shipment = shipmentService.trackShipment(id);
-        if (shipment != null) {
-            return ResponseEntity.ok(shipment);
-        }
-        return ResponseEntity.notFound().build();
+        return shipmentService.trackShipment(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> updateShipmentStatus(@PathVariable Long id, @RequestParam ShipmentStatus status) {
         shipmentService.updateShipmentStatus(id, status);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<Shipment> assignShipmentToCourier(@PathVariable Long id) {
+        return shipmentService.assignShipmentToCourier(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

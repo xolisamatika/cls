@@ -1,17 +1,16 @@
 package org.example.logistics.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Entity
 public class Courier {
@@ -22,6 +21,9 @@ public class Courier {
     private String name;
     private String location;
     private int capacity;
+
+    @OneToMany(mappedBy = "courier")
+    private List<Shipment> shipments;
 
     @Override
     public final boolean equals(Object o) {
