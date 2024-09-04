@@ -4,11 +4,11 @@ import org.example.logistics.entity.Courier;
 import org.example.logistics.entity.Shipment;
 import org.example.logistics.entity.ShipmentStatus;
 import org.example.logistics.repository.ShipmentRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class ShipmentServiceTest {
+@ExtendWith(MockitoExtension.class)
+class ShipmentServiceTest {
 
     @Mock
     private ShipmentRepository shipmentRepository;
@@ -27,13 +28,8 @@ public class ShipmentServiceTest {
     @InjectMocks
     private ShipmentService shipmentService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testCreateShipment() {
+    void testCreateShipment() {
         Shipment shipment = new Shipment();
         shipment.setSender("John Doe");
         shipment.setRecipient("Jane Doe");
@@ -48,7 +44,7 @@ public class ShipmentServiceTest {
     }
 
     @Test
-    public void testUpdateShipmentStatus() {
+    void testUpdateShipmentStatus() {
         Shipment shipment = new Shipment();
         shipment.setId(1L);
         shipment.setStatus(ShipmentStatus.CREATED);
@@ -84,7 +80,7 @@ public class ShipmentServiceTest {
         assertTrue(result.isPresent());
         assertEquals(ShipmentStatus.ASSIGNED, result.get().getStatus());
         assertEquals(courier, result.get().getCourier());
-        verify(courierService, times(1)).updateCourierCapacity(anyLong(), any());
+        verify(courierService, times(1)).updateCourierCapacity(anyLong(), anyInt());
         verify(shipmentRepository, times(1)).save(any(Shipment.class));
     }
 
@@ -169,11 +165,10 @@ public class ShipmentServiceTest {
         shipment.setCourier(courier);
         shipment.setStatus(ShipmentStatus.IN_TRANSIT);
 
-        when(shipmentRepository.findById(1L)).thenReturn(Optional.of(shipment));
-        when(courierService.findCourierById(1L)).thenReturn(Optional.empty());
+        when(shipmentRepository.findById(2L)).thenReturn(Optional.empty());
 
         // When
-        Optional<Shipment> result = shipmentService.trackShipment(1L);
+        Optional<Shipment> result = shipmentService.trackShipment(2L);
 
         // Then
         assertFalse(result.isPresent());
